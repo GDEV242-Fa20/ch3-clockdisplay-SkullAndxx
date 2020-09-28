@@ -22,6 +22,7 @@ public class ClockDisplay
     private NumberDisplay minutes;
     private String displayString;    // simulates the actual display
     private int tempHour; //display modified user time
+    private String timeIndicator; //am
     
     /**
      * Constructor for ClockDisplay objects. This constructor 
@@ -31,6 +32,7 @@ public class ClockDisplay
     {
         hours = new NumberDisplay(24);
         minutes = new NumberDisplay(60);
+        timeIndicator = "am";
         updateDisplay();
     }
 
@@ -42,6 +44,11 @@ public class ClockDisplay
     public ClockDisplay(int hour, int minute)
     {
         hours = new NumberDisplay(24);
+        if(hour < 13){
+            timeIndicator = "am";
+        }else{
+            timeIndicator = "pm";
+        }
         minutes = new NumberDisplay(60);
         setTime(hour, minute);
     }
@@ -84,7 +91,7 @@ public class ClockDisplay
     private void updateDisplay()
     {
         displayString = get24HourInternalDisplay() + ":" + 
-                        minutes.getDisplayValue();
+                        minutes.getDisplayValue() + timeIndicator;
     }
     
     /**
@@ -92,18 +99,24 @@ public class ClockDisplay
        */
       public int get24HourInternalDisplay(){
           
-          if(hours.getValue()<13){
+          if(hours.getValue()<12){
+            timeIndicator = "am";
             if(hours.getValue() == 0){
+                
                 return tempHour = 12;
             }else{
                 return tempHour = hours.getValue();
             }
+            
+            
           }else{
-            if(hours.getValue() == 13){
+            timeIndicator = "pm";
+            if(hours.getValue() == 12){
                 return tempHour = 12;
             }else{
                 return tempHour = hours.getValue()%12;
             }
+            
           }
 
         }
