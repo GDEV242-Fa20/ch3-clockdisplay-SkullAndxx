@@ -9,14 +9,19 @@
  * and reacts by incrementing the display. This is done in the usual clock
  * fashion: the hour increments when the minutes roll over to zero.
  * 
- * @author Michael Kölling and David J. Barnes
- * @version 2016.02.29
+ * Update: do 12 hour clock adjust user input instead of the display method
+ * On second opinion, I like this method more because it 
+ * uses an entirely new method.
+ * 
+ * @author Erick Rubio
+ * @version 2020.09.28
  */
 public class ClockDisplay
 {
     private NumberDisplay hours;
     private NumberDisplay minutes;
     private String displayString;    // simulates the actual display
+    private int tempHour; //display modified user time
     
     /**
      * Constructor for ClockDisplay objects. This constructor 
@@ -78,7 +83,29 @@ public class ClockDisplay
      */
     private void updateDisplay()
     {
-        displayString = hours.getDisplayValue() + ":" + 
+        displayString = get24HourInternalDisplay() + ":" + 
                         minutes.getDisplayValue();
     }
+    
+    /**
+     * Set an input to hours needed for intake of 24 hours.
+       */
+      public int get24HourInternalDisplay(){
+          
+          if(hours.getValue()<13){
+            if(hours.getValue() == 0){
+                return tempHour = 12;
+            }else{
+                return tempHour = hours.getValue();
+            }
+          }else{
+            if(hours.getValue() == 13){
+                return tempHour = 12;
+            }else{
+                return tempHour = hours.getValue()%12;
+            }
+          }
+
+        }
 }
+
